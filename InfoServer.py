@@ -3,9 +3,9 @@ from pymongo import MongoClient
 from pprint import pprint
 # connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
 client = MongoClient(
-    'mongodb+srv://admin:LKjHXncRXZKA6zPM@clustermongdb.vgusz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+    "mongodb+srv://admin:LKjHXncRXZKA6zPM@clustermongdb.vgusz.mongodb.net/ClusterMongDB?retryWrites=true&w=majority"
 )
-db=client.admin
+db = client.admin
 # Issue the serverStatus command and print the results
-serverStatusResult=db.command("serverStatus")
+serverStatusResult = db.command("serverStatus")
 pprint(serverStatusResult)
