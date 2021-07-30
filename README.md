@@ -18,3 +18,8 @@ Grupos de 1 - 4 pessoas
 - `python -m venv env`
 - `.\env\Scripts\activate`
 - `pip install -r requeriments.txt`
+
+
+### obs: 
+- Dinamismo para consulta por meio de interação com o usuário. 
+- Adição de mais uma collection afim de atender os requisitos do projeto.
