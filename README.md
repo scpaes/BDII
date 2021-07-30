@@ -1,6 +1,5 @@
 # BDII
-## 
-Projeto B.Dados II MongoDB
+### Projeto B.Dados II MongoDB
 
 Grupos de 1 - 4 pessoas
 - Banco: MongoDB
@@ -11,3 +10,11 @@ Grupos de 1 - 4 pessoas
 - Consultas devem ser feitas para todas as coleções
 - Ao menos uma consulta deve possibilitar procurar "por apenas parte" do campo buscado
 - Ao menos uma consulta deve retornar dados de mais de uma coleção
+
+
+### setup:
+
+- `pip install virtualenv`
+- `python -m venv env`
+- `.\env\Scripts\activate`
+- `pip install -r requeriments.txt`
