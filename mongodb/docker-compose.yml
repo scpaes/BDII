@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+    mongoDB:
+        image: mongo:latest
+        volumes:
+        - db-data:/data/db
+        - mongo-config:/data/configdb
