@@ -1,11 +1,10 @@
 from pymongo import MongoClient
-# pprint library is used to make the output look more pretty
 from pprint import pprint
-# connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
-client = MongoClient(
-    "mongodb+srv://admin:LKjHXncRXZKA6zPM@clustermongdb.vgusz.mongodb.net/ClusterMongDB?retryWrites=true&w=majority"
-)
+from decouple import config
+
+URL_CONN=config('DB_STRING_CONN', default=None)
+
+client = MongoClient(URL_CONN)
 db = client.admin
-# Issue the serverStatus command and print the results
 serverStatusResult = db.command("serverStatus")
 pprint(serverStatusResult)
