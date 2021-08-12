@@ -7,6 +7,6 @@ MONGO_DB_URL=config('DB_STRING_CONN', default=None)
 if __name__ == '__main__':
     client = MongoClient(MONGO_DB_URL)
     db = client.business
-    search_param = input("")
+    # search_param = input("")
     fivestar = db.reviews.find_one({'rating': 5})
     print(fivestar)
