@@ -6,7 +6,12 @@ from decouple import config
 
 MONGO_DB_URL = config('DB_STRING_CONN', default=None)
 
-
+COMMAND_SOPTIONS = [
+    ('Cadastro de restaurante', 'business-create', 'c'),
+    ('Cadastro de review', 'business-feedback', 'bf'),
+    ('Consultar reviews de restaurante', 'get-business-info', 'gbi'),
+    ('Encerrar execução do client', 'exit', '')
+]
 def create_business(client):
     name = input('Informe o nome: ')
     rating = input('Informe a nota: ')
@@ -70,8 +75,42 @@ def get_business_by_feedback(client):
     pass
 
 
+def main_menu() -> None:
+    print('{:40} | {:^20} | {:^9}'.format('', 'Commands', 'Options'))
+    fmt = '{:40} | {:^20} | {:^9}'
+
+    for description, command, option in COMMAND_SOPTIONS:
+        print(fmt.format(description, command, option))
+
+    print('\n')
+
 if __name__ == '__main__':
     client = MongoClient(MONGO_DB_URL)
+    
+    while(True):
+        main_menu()
+        command = input('comando: ')
+
+        if command == 'exit':
+            break
+        
+        if command == 'business-create' or command == 'c':
+            create_business(client)
+        elif command == 'business-feedback' or command == 'bf':
+            create_feedback(client)
+        elif command == 'get-business-info' or command == 'gbi':
+            get_business_by_rating(client)
+        else:
+            print('Comando inválido')
+    
+    
+    
+    
+    
+    
+    
+    
+    
     # print(create_business(client))
     # print(get_business_by_rating(client))
 
@@ -86,4 +125,4 @@ if __name__ == '__main__':
 
     # create_feedback(client, result)
     # print(get_business_by_id(client, '611494bfb058734eb7678610'))
-    print(get_feedback_by_business_id(client, '611494bfb058734eb7678610'))
+    # print(get_feedback_by_business_id(client, '611494bfb058734eb7678610'))
