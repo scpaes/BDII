@@ -95,19 +95,39 @@ def main_menu() -> None:
 def get_business_by_name(client):
     db = client.business
     name = input('Informe o nome do restaurante: ')
-    name = re.compile(f'.*{name}.*', re.IGNORECASE)    
-    result = db.reviews.find_one({'name': name})
-    return result
+    name = re.compile(f'.*{name}.*', re.IGNORECASE)
+    count_result = db.reviews.count_documents({'name': name})
+    if count_result > 0:
+        print(f'Foram encontrados {count_result}, resultados para pesquisa.')   
+        choice = input('Deseja exibir todos?: [Y/N] \n')
+        if choice.upper() == 'Y':
+            result = db.reviews.find({'name': name})
+            return result
+        else:
+            return None
+    else:
+        return None
 
 
 def show_business_info(business: Dict) -> None:
     print(f'Nome do restaurante: {business.get("name")}')
     print(f'Nota do restaurante: {business.get("rating")}')
     print(f'Tipo do restaurante: {business.get("cuisine")}')
+    print('\n')
 
 
 def show_feedback_info(feedback: Dict) -> None:
     print(f'Comentário: {feedback.get("feedback_content")}')
+
+
+def find_all(client):
+    db_business = client.business
+    db_feedback = client.feedback
+
+    business_result = db_business.reviews.find({})
+    feedback_result = db_feedback.reviews.find({})
+
+    return business_result, feedback_result
 
 if __name__ == '__main__':
     client = MongoClient(MONGO_DB_URL)
@@ -129,7 +149,17 @@ if __name__ == '__main__':
             show_feedback_info(result[1])
         elif command == 'gb':
             result = get_business_by_name(client)
-            show_business_info(result)
+            if result is not None:
+                for business in result:
+                    show_business_info(business)
+            else:
+                print('Nenhum resultado para exibir.')
+        elif command == 'all':
+            results = find_all(client)
+            for business in results[0]:
+                show_business_info(business)
+            for feedback in results[1]:
+                show_feedback_info(feedback)
         else:
             print('Comando inválido')
     
