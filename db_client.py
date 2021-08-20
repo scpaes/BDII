@@ -117,7 +117,7 @@ def show_business_info(business: Dict) -> None:
 
 
 def show_feedback_info(feedback: Dict) -> None:
-    print(f'Comentário: {feedback.get("feedback_content")}')
+    print(f'Comentário: {feedback.get("feedback_content")}, restaurante: {feedback.get("business_id")}')
 
 
 def find_all(client):
