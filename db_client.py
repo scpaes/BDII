@@ -148,6 +148,22 @@ def update_business(client):
         print (updated)
 
 
+def delete_business(client):
+    result = get_business_by_name(client)
+    if result is not None:
+        show_business_info(result[0])
+        print('Deseja deletar o estabelecimento informado acima? [y/n]')
+        choice = input().lower()
+        if choice == 'y':
+            business_id = result[0].get('_id')
+            db = client.business
+            deleted = db.reviews.delete_one({"_id": business_id})
+            print(deleted)
+        else:
+            print('operação cancelada')
+            return None
+
+
 
 if __name__ == '__main__':
     client = MongoClient(MONGO_DB_URL)
@@ -182,5 +198,7 @@ if __name__ == '__main__':
                 show_feedback_info(feedback)
         elif command == 'update':
             update_business(client)
+        elif command == 'delete':
+            delete_business(client)
         else:
             print('Comando inválido')
