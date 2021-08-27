@@ -97,7 +97,7 @@ def get_business_by_name(client):
     name = input('Informe o nome do restaurante: ')
     name = re.compile(f'.*{name}.*', re.IGNORECASE)
     count_result = db.reviews.count_documents({'name': name})
-    if count_result > 0:
+    if count_result > 1:
         print(f'Foram encontrados {count_result}, resultados para pesquisa.')   
         choice = input('Deseja exibir todos?: [Y/N] \n')
         if choice.upper() == 'Y':
@@ -105,6 +105,9 @@ def get_business_by_name(client):
             return result
         else:
             return None
+    elif count_result == 1:
+        result = db.reviews.find({'name': name})
+        return result
     else:
         return None
 
@@ -128,6 +131,23 @@ def find_all(client):
     feedback_result = db_feedback.reviews.find({})
 
     return business_result, feedback_result
+
+
+def update_business(client):
+    result = get_business_by_name(client)
+    if result is not None:
+        show_business_info(result[0])
+        print('Informe o campo e o novo valor para o registro (separados por :).')
+        new_field_value = input()
+        new_field_value = new_field_value.split(':')
+        business_id = result[0].get('_id')
+
+
+        db = client.business
+        updated = db.reviews.update_one({"_id": business_id}, {"$set":{new_field_value[0]:new_field_value[1]}})
+        print (updated)
+
+
 
 if __name__ == '__main__':
     client = MongoClient(MONGO_DB_URL)
@@ -160,29 +180,7 @@ if __name__ == '__main__':
                 show_business_info(business)
             for feedback in results[1]:
                 show_feedback_info(feedback)
+        elif command == 'update':
+            update_business(client)
         else:
             print('Comando inválido')
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    # print(create_business(client))
-    # print(get_business_by_rating(client))
-
-    # 5create_feedback(client)
-
-    # print(get_feedback_by_id(client, '61148c19809e2c669f6b34e3'))
-
-    # print(get_business_by_rating(client))
-
-    # result = create_business(client)
-    # print(result)
-
-    # create_feedback(client, result)
-    # print(get_business_by_id(client, '611494bfb058734eb7678610'))
-    # print(get_feedback_by_business_id(client, '611494bfb058734eb7678610'))
